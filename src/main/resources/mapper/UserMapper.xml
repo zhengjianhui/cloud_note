@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.tedu.cloudnote.dao.UserDao">
+
+	
+	<!-- 根据用户名查询 -->
+	<select id="findByName" parameterType="string" 
+		resultType="org.tedu.cloudnote.entity.User">
+	select * from cn_user
+	where cn_user_name=#{name}
+	</select>
+
+	<!-- 根据用户输入保存，用户信息 -->
+	<insert id="save" 
+	parameterType="org.tedu.cloudnote.entity.User">
+	insert into cn_user 
+		(cn_user_id,cn_user_name,
+		cn_user_password,cn_user_nick)
+	values (#{cn_user_id},#{cn_user_name},
+		#{cn_user_password},#{cn_user_nick})
+	</insert>
+
+</mapper>

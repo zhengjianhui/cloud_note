@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.tedu.cloudnote.dao.BookDao">
+
+	<!-- 根据笔记用户id 查询所有笔记本 -->
+	<select id="loadUserBooks" 
+		parameterType="string" resultType="org.tedu.cloudnote.entity.Book">
+		 select * from cn_user as a 
+			left join cn_notebook as b on a.cn_user_id = b.cn_user_id
+				where b.cn_user_id = #{_prarm};
+	</select>
+	
+	<!-- 新增笔记本 -->
+	<insert id="save" 
+		parameterType="org.tedu.cloudnote.entity.Book">
+		insert into cn_notebook
+			(cn_notebook_id,cn_user_id,
+			cn_notebook_type_id,cn_notebook_name,
+			cn_notebook_desc,cn_notebook_createtime)
+		values (#{cn_notebook_id},#{cn_user_id},
+			#{cn_notebook_type_id},#{cn_notebook_name},
+			#{cn_notebook_desc},#{cn_notebook_createtime})
+	</insert>
+	
+	<update id="rename" parameterType="org.tedu.cloudnote.entity.Book" >
+		update cn_notebook set 
+			cn_notebook_name = #{cn_notebook_name}
+				where cn_notebook_id = #{cn_notebook_id};
+	</update>
+	
+</mapper>
