@@ -3,8 +3,13 @@
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="org.tedu.cloudnote.dao.NoteDao">
 
-
-
+	<!-- 转移笔记 修改cn_notebook_id字段 -->
+	<update id="updateBookId" parameterType="org.tedu.cloudnote.entity.Book">
+		update cn_note set
+			cn_notebook_id = #{cn_notebook_id}
+				where cn_note_id = #{cn_note_id};
+			
+	</update>
 
 
 	<!-- 根据笔记本id 查询所有note -->
@@ -74,10 +79,10 @@
 	
 	
 	<!-- 修改 cn_note_type_id -->
-	<update id="updateNoteByType" parameterType="string">
+	<update id="updateNoteByType" parameterType="org.tedu.cloudnote.entity.Note">
 		update cn_note set
-			cn_note_type_id = '2'
-				where cn_note_id = #{_param};
+			cn_note_type_id = #{cn_note_type_id}
+				where cn_note_id = #{cn_note_id};
 	</update>
 
 </mapper>

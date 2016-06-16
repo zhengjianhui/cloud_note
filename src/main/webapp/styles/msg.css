@@ -1,0 +1,18 @@
+
+
+.a{
+    display: none;
+    background: #008866;
+    height: 40px;
+    width: 1300px;
+    margin: auto;
+
+	position: fixed;
+    top: 300px;
+    left: 700; 
+}
+.altreMeg{
+    text-align: center;
+    height: 40px;
+    width: 1300px;
+}

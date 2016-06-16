@@ -57,6 +57,7 @@ function loadUserBooks() {
 					var bookName = books[i].cn_notebook_name;
 					// 创建笔记本列表li
 					createBookLi(bookId, bookName);
+					showMsg(result.msg);
 				}
 			}
 		},
@@ -75,6 +76,7 @@ function createBookLi(bookId, bookName) {
 	sli += '	<a>';
 	sli += '		<i class="fa fa-book" title="online" rel="tooltip-bottom"></i>';
 	sli += bookName;
+	sli += '<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down delete_book"><i class="fa fa-times"></i></button>'
 	sli += '	</a>';
 	sli += '</li>';
 	var $li = $(sli);// 将sli字符串转成jQuery对象

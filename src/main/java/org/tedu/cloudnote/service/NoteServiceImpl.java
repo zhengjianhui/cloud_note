@@ -121,7 +121,15 @@ public class NoteServiceImpl implements NoteService{
 
 	@Override
 	public NoteResult moveNote(String bookID, String noteID) {
-		// TODO Auto-generated method stub
-		return null;
+		NoteResult result = new NoteResult();
+		Note note = new Note();
+		
+		note.setCn_notebook_id(bookID);
+		note.setCn_note_id(noteID);
+		dao.updateBookId(note);
+		
+		result.setStatus(0);
+		result.setMsg("转移成功");
+		return result;
 	}
 }

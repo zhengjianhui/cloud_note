@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.tedu.cloudnote.service.ShareService;
 import org.tedu.cloudnote.util.NoteResult;
 
-
 @Controller
 @RequestMapping("/share")
-public class ShareNoteController {
+public class ShareSearchController {
 
 	@Resource
 	private ShareService shareService;
 	
-	@RequestMapping("/share.do")
+	@RequestMapping("/search.do")
 	@ResponseBody
-	public NoteResult execute(String noteID, String noteTypeID) {
-		return shareService.shareNote(noteID, noteTypeID);
+	public NoteResult execute(String noteTitle) {
+		
+		return shareService.shareSearch(noteTitle);
 	}
 }

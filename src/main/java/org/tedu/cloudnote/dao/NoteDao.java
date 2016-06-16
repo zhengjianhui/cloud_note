@@ -44,6 +44,12 @@ public interface NoteDao {
 	  * '1' 为分享 '2' 分享 
 	  * @param noteID
 	  */
-	 public void updateNoteByType(String noteID);
+	 public void updateNoteByType(Note note);
+	 
+	 /**
+	  * 修改cn_notebook_id
+	  * @param note
+	  */
+	 public void updateBookId(Note note);
 	 
 }

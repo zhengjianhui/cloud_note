@@ -15,5 +15,23 @@ public interface ShareService {
 	 * @param noteID
 	 * @return
 	 */
-	public NoteResult shareNote(String noteID);
+	public NoteResult shareNote(String noteID,  String noteTypeID);
+	
+	/**
+	 * 根据笔记名 模糊查询分享笔记
+	 * @param noteTitle
+	 * @return
+	 */
+	public NoteResult shareSearch(String noteTitle);
+	
+	/**
+	 * 查看笔记预览
+	 * @param shareID
+	 * @return
+	 */
+	public NoteResult loadShare(String shareID);
+	
+	
+	
+	
 }

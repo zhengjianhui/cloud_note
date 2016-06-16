@@ -1,5 +1,7 @@
 package org.tedu.cloudnote.dao;
 
+import java.util.List;
+
 import org.tedu.cloudnote.entity.Share;
 
 public interface ShareDao {
@@ -16,4 +18,27 @@ public interface ShareDao {
 	 * @return
 	 */
 	public Share findByNoteId(String noteID);
+	
+	
+	/**
+	 * 根据笔记名 模糊查询 分享笔记
+	 * @param noteTitile
+	 * @return
+	 */
+	public List<Share> findLikeTitle(String noteTitle);
+	
+	/**
+	 * 处理分享笔记预览
+	 * @param shareID
+	 * @return
+	 */
+	public Share findById(String shareID);
+	
+	/**
+	 * 根据noteID 删除对应记录
+	 * @param noteID
+	 * @return
+	 */
+	public void deleteShare(String noteID);
+	
 }

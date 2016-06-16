@@ -3,15 +3,34 @@
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="org.tedu.cloudnote.dao.ShareDao">
 
+	<!-- 删除分享记录 -->
+	<delete id="deleteShare" parameterType="String">
+		delete from cn_share
+			where cn_note_id = #{_param};
+	
+	</delete>
+
+	<!-- 根据shareID 查询 share实体 -->
+	<select id="findById" 
+		parameterType="String"
+		resultType="org.tedu.cloudnote.entity.Share">
+		
+		select * from cn_share
+			where cn_share_id = #{_param}
+	</select>
+
 
 	<!-- 根据 note_id 查询share 记录 -->
-	<select id="findByNoteId" parameterType="String" resultType="org.tedu.cloudnote.entity.Share">
+	<select id="findByNoteId" 
+		parameterType="String"
+			 resultType="org.tedu.cloudnote.entity.Share">
 		select * from cn_share where cn_note_id = #{_param};
 	</select>
 
 
 	<!-- 插入新的share  -->
-	<insert id="save" parameterType="org.tedu.cloudnote.entity.Share">
+	<insert id="save" 
+		parameterType="org.tedu.cloudnote.entity.Share">
 		insert into cn_share(
 			cn_share_id,cn_share_title,
 			cn_share_body,cn_note_id
@@ -22,5 +41,15 @@
 			#{cn_note_id}
 		)
 	</insert>
+	
+	<!-- 模糊查询 -->
+	<select id="findLikeTitle" 
+		parameterType="String" 
+		resultType="org.tedu.cloudnote.entity.Share">
+		
+	select cn_share_id,cn_share_title 
+		from cn_share
+			where cn_share_title like '%' #{_param} '%'
+	</select>
 
 </mapper>

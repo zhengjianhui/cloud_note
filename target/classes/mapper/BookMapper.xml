@@ -23,10 +23,14 @@
 			#{cn_notebook_desc},#{cn_notebook_createtime})
 	</insert>
 	
+	<!-- 更名 -->
 	<update id="rename" parameterType="org.tedu.cloudnote.entity.Book" >
 		update cn_notebook set 
 			cn_notebook_name = #{cn_notebook_name}
 				where cn_notebook_id = #{cn_notebook_id};
 	</update>
+	
+	
+
 	
 </mapper>

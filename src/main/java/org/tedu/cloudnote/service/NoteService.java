@@ -1,6 +1,5 @@
 package org.tedu.cloudnote.service;
 
-import org.tedu.cloudnote.entity.Note;
 import org.tedu.cloudnote.util.NoteResult;
 
 public interface NoteService {

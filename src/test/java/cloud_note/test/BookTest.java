@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.tedu.cloudnote.dao.BookDao;
 import org.tedu.cloudnote.entity.Book;
+import org.tedu.cloudnote.entity.Note;
 
 public class BookTest {
 	
@@ -46,10 +47,12 @@ public class BookTest {
 //		String s2 = "Hello";
 //		Assert.assertEquals(s1, s2);
 			
-		Book book = new Book();
-		book.setCn_notebook_id("c2a39fab-ae81-409d-ba7e-34510549e622");
-		book.setCn_notebook_name("测试笔记本修改");
-		
-		dao.rename(book);
+//		Book book = new Book();
+//		book.setCn_notebook_id("c2a39fab-ae81-409d-ba7e-34510549e622");
+//		book.setCn_notebook_name("测试笔记本修改");
+//		
+//		dao.rename(book);
 	}
+	
+
 }

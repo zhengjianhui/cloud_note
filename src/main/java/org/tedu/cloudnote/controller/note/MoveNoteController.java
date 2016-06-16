@@ -30,6 +30,6 @@ public class MoveNoteController {
 	@RequestMapping("/move.do")
 	@ResponseBody
 	public NoteResult execute(String bookID, String noteID) {
-		return null;
+		return noteService.moveNote(bookID, noteID);
 	}
 }

@@ -23,27 +23,21 @@
 <link href="styles/umeditor.min.css" type="text/css" rel="stylesheet">
 
 <script type="text/javascript" src="scripts/jquery-1.8.0.js">
-
 </script>
 
 <script type="text/javascript" src="scripts/cookie_util.js">
-
 </script>
 
 <script type="text/javascript" src="scripts/book.js">
-
 </script>
 
 <script type="text/javascript" src="scripts/note.js">
-
 </script>
 
 <script type="text/javascript" src="scripts/alert.js">
-
 </script>
 
-<script type="text/javascript" src="scripts/macClick.js">
-
+<script type="text/javascript" src="scripts/share.js">
 </script>
 
 <script type="text/javascript">
@@ -63,6 +57,9 @@
 			// 点击笔记本加载笔记列表
 			// 处理笔记，并通过on函数为li动态添加单击事件
 			$('#book_ul').on('click', 'li', loadBookNotes);
+			
+			// 成功提示框
+			showMsg();
 
 			// 弹出双击 修改name 对话框
 			$('#book_ul').on('dblclick', 'li', alertRenameWindow);
@@ -109,11 +106,24 @@
       $('#note_ul').on('click','.btn_move', alertMoveNoteWindow);
 
       // 确认移动笔记本
-   	$("#can").on("click","#sure_movenote",sureMoveNote);
+   	  $("#can").on("click","#sure_movenote",sureMoveNote);
 
 
 
+	// click(data,fn)中的data其实是json对象,取的时候,只能通过当前的事件源来取,
+	// data是默认放在event中的,所以这里的data是eventdata,引用的时候也使用event.data.name
+	// 回收站
+	$('#rollback_button').click({"num":4},show);
+	// 收藏
+	$('#like_button').click({"num":7},show);
+	// 活动
+	$('#action_button').click({"num":8},show);
 
+	//按回车搜索分享笔记
+	$("#search_note").keydown(loadShareSearch);
+
+  // 查看笔记分享预览
+  $('#search_ul').on('click','li',findSearch);
 		});
 	} else {
 		window.location.href = "log_in.html";
@@ -122,6 +132,11 @@
 
 </head>
 <body class="animated fadeIn">
+
+<!--  	<div id="showMsg" class="a">
+    	<p class='altreMeg'>欢迎使用</p>
+    </div> --> 
+	
 	<header class="header">
 		<div class="header-brand">
 			<a data-pjax=".content-body" href="edit.html"> <img
@@ -164,7 +179,9 @@
 		<!-- alert_background-->
 		<div class="opacity_bg" style='display:none'></div>
 		<!-- alert_notebook -->
-		<div id="can"></div>
+		<div id="can">
+
+		</div>
 		<div class="col-xs-2" style='padding:0;' id='pc_part_1'>
 			<!-- side-right -->
 			<div class="pc_top_first">
@@ -275,7 +292,8 @@
 				<div class="module" data-toggle="niceScroll">
 					<div class="chat-contact">
 						<div class="contact-body">
-							<ul class="contacts-list">
+							<ul class="contacts-list" id="search_ul">
+
 							</ul>
 						</div>
 					</div>
@@ -375,7 +393,7 @@
 		</div>
 		<!-- 编辑笔记 -->
 		<!-- 预览笔记 -->
-		<div class="col-sm-7" id='pc_part_5' style='display:none;'>
+		<div class="col-sm-7" id='pc_part_5' style='display:none;' >
 			<div class="pc_top_third">
 				<div class="row">
 					<div class="col-xs-9">
@@ -388,7 +406,8 @@
 					<div class="chat-contact">
 						<div class="contact-body clear_margin">
 							<h4 id="noput_note_title"></h4>
-							<p></p>
+							<p id="noput_note_body">
+							</p>
 						</div>
 					</div>
 				</div>
