@@ -1,3 +1,6 @@
+
+
+
 // 创建笔记本
 function sureAddBook() {
 	// 获取请求参数
@@ -40,9 +43,7 @@ function loadUserBooks() {
 	$.ajax({
 		url : "http://localhost:8080/cloud_note/book/loadbooks.do",
 		type : "post",
-		data : {
-			"userID" : userID
-		},
+		data : {"userID" : userID},
 		dataType : "json",
 		success : function(result) {
 			// 打桩

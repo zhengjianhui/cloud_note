@@ -40,6 +40,11 @@
 <script type="text/javascript" src="scripts/share.js">
 </script>
 
+<script type="text/javascript" src="scripts/delete.js">
+</script>
+
+
+
 <script type="text/javascript">
 	// 获取用户的userID是否存在
 	var userID = getCookie("userID");
@@ -57,7 +62,7 @@
 			// 点击笔记本加载笔记列表
 			// 处理笔记，并通过on函数为li动态添加单击事件
 			$('#book_ul').on('click', 'li', loadBookNotes);
-			
+
 			// 成功提示框
 			showMsg();
 
@@ -113,7 +118,10 @@
 	// click(data,fn)中的data其实是json对象,取的时候,只能通过当前的事件源来取,
 	// data是默认放在event中的,所以这里的data是eventdata,引用的时候也使用event.data.name
 	// 回收站
-	$('#rollback_button').click({"num":4},show);
+
+	$('#rollback_button').click({"num":4},findDeleteList);
+
+
 	// 收藏
 	$('#like_button').click({"num":7},show);
 	// 活动
@@ -124,6 +132,15 @@
 
   // 查看笔记分享预览
   $('#search_ul').on('click','li',findSearch);
+
+  // 删除按钮绑定
+   $('#delete_ul').on('click','#alertDelete',alertDeleteRollbackWindow);
+  // 处理删除 换到弹出菜单中处理
+/*   $('#can').on('click','#delete_li_btn',deleteByID); */
+
+  $('#delete_ul').on('click','#deleteReplayBook',alertReplayWindow)
+
+
 		});
 	} else {
 		window.location.href = "log_in.html";
@@ -135,8 +152,8 @@
 
 <!--  	<div id="showMsg" class="a">
     	<p class='altreMeg'>欢迎使用</p>
-    </div> --> 
-	
+    </div> -->
+
 	<header class="header">
 		<div class="header-brand">
 			<a data-pjax=".content-body" href="edit.html"> <img
@@ -264,8 +281,8 @@
 				<div class="module" data-toggle="niceScroll">
 					<div class="chat-contact">
 						<div class="contact-body">
-							<ul class="contacts-list">
-								<li class="disable"><a> <i class="fa fa-file-text-o"
+							<ul class="contacts-list" id="delete_ul">
+								<!-- <li class="disable"><a> <i class="fa fa-file-text-o"
 										title="online" rel="tooltip-bottom"></i> 虚假回收站笔记
 										<button type="button"
 											class="btn btn-default btn-xs btn_position btn_delete">
@@ -275,7 +292,7 @@
 											class="btn btn-default btn-xs btn_position_2 btn_replay">
 											<i class="fa fa-reply"></i>
 										</button>
-								</a></li>
+								</a></li> -->
 							</ul>
 						</div>
 					</div>
@@ -393,7 +410,7 @@
 		</div>
 		<!-- 编辑笔记 -->
 		<!-- 预览笔记 -->
-		<div class="col-sm-7" id='pc_part_5' style='display:none;' >
+<!-- 		<div class="col-sm-7" id='pc_part_5' style='display:none;' >
 			<div class="pc_top_third">
 				<div class="row">
 					<div class="col-xs-9">
@@ -412,7 +429,7 @@
 					</div>
 				</div>
 			</aside>
-		</div>
+		</div> -->
 		<!-- 预览笔记 -->
 	</div>
 	<footer>

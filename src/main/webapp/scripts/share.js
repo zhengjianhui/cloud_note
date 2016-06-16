@@ -1,6 +1,8 @@
 
 // 查看分享笔记
 function findSearch() {
+	
+	console.log(1);
 	//设置选中状态
 	$("#search_ul a").removeClass("checked");
 	$(this).find("a").addClass("checked");
@@ -36,7 +38,7 @@ function findSearch() {
 //				$('#input_note_title').val(title);
 //				// um 编辑器
 //				um.setContent(body);
-				 showMsg(result.msg);
+//				 showMsg(result.msg);
 			}
 		},
 		type:"post",

@@ -1,4 +1,7 @@
 
+
+
+
 // 成功提示框
 // 淡入淡出效果
 function showMsg(msg) {
@@ -9,14 +12,14 @@ function showMsg(msg) {
 		 $("#msg_alter").hide(1300,function() {
 			 $("#showMsg").hide();
 		 });
-		 
+
 
 //	show(2000,function(){
 //		 $("#showMsg").
 
 	});
-	
-  
+
+
    }
 
 //click(data,fn)中的data其实是json对象,取的时候,只能通过当前的事件源来取,
@@ -24,8 +27,8 @@ function showMsg(msg) {
 // 切换显示区域
 function show (event) {
 //	console.log(event.data.num);
-	changeNoteList(event.data.num);	
-} 
+	changeNoteList(event.data.num);
+}
 
 //切换显示笔记列表区
 function changeNoteList(index){
@@ -82,7 +85,7 @@ function sureMoveNote() {
 
 					},
 					success:function(result) {
-						
+
 						if(result.status == 0) {
 							$li.remove();
 							// 关闭对话框
@@ -112,7 +115,7 @@ function sureShareNote() {
 	// 获取发送参数
 	var $li = $("#note_ul a.checked").parent();
 	var noteID = $li.data("noteId");
-	
+
 	var noteTypeID = $li.data("noteTypeId");
 	var noteTitle = $li.find('a').text();
 	console.log(noteTitle);
@@ -131,7 +134,7 @@ function sureShareNote() {
 //				var $titles = $li.find("button[title='分享']");
 //				$titles.hide();
 //				console.log($titles);
-				
+
 				// 分享图标 2 时为以分享
 				// $li.data("noteTypeId","1"); 修改状态避免重复点击 出现状态不变的bug
 				if(noteTypeID == 2) {
@@ -139,9 +142,9 @@ function sureShareNote() {
 					var sli='<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> ';
 					sli+= noteTitle;
 					sli+='<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>';
-					
+
 					$li.find("a").html(sli);
-					
+
 				} else {
 					$li.data("noteTypeId","2");
 					var sli='<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> ';
@@ -150,7 +153,7 @@ function sureShareNote() {
 					sli+='		<i class="fa fa-sitemap"></i>';
 					$li.find("a").html(sli);
 				}
-				
+
 				showMsg(result.msg);
 
 			} else if(result.status == 2) {
@@ -173,9 +176,18 @@ function sureDeleteNote() {
 	// 获取li 元素
 	var $li = $("#note_ul a.checked").parent();
 	var $noteID = $li.data("noteId");
+	var noteTypeId = $li.data("noteTypeId");
 
 	$("#can").empty();
 	$(".opacity_bg").hide();
+
+	// 判断是否删除
+	if(noteTypeId == 2) {
+		showMsg('取消分享~才能删除!');
+		return;
+	}
+
+
 
 	// 发送ajax请求
 	$.ajax({
@@ -191,6 +203,7 @@ function sureDeleteNote() {
 			$("#input_note_title").val("");
 			// 清空内容
 			um.setContent("");
+
 			showMsg(result.msg);
 		},
 		type:"post",
@@ -271,6 +284,7 @@ function sureAddNote() {
 					createNoteLi(result.noteID, noteName);
 					$('#input_note_title').val(noteName);
 
+					loadBookNotes2(bookID);
 
 					showMsg(result.msg);
 
@@ -363,7 +377,7 @@ function loadNote() {
 //	$('#note_ul').on('click','li',function() {
 		// 获取请求参数
 		var noteID = $(this).data("noteId");
-		console.log($('note_ul .checked'));
+//		console.log($('note_ul .checked'));
 		// 为选中的笔记增加样式（当前笔记）
 		// 触发单击事件时 移除所有同级元素的class 为单击元素增加 class
 		$("#note_ul a").removeClass("checked");
@@ -402,16 +416,51 @@ function loadNote() {
 }
 
 
+//用于刷新笔记
+function loadBookNotes2(bookID) {
+	console.log(bookID);
+	// 发送ajax请求
+	$.ajax({
+		url:'http://localhost:8080/cloud_note/note/loadnotes.do',
+		type:'post',
+		data:{'bookId':bookID},
+		dataType:'json',
+		success:function(result) {
+
+			if(result.status == 0) {
+
+				// 清除 "#note_ul" 下原有的li 避免重复 empty() 删除所有子节点
+				$("#note_ul").empty();
+
+				// 获取list集合
+				var notes = result.data;
+
+				// 遍历
+				for(var i = 0; i < notes.length; i++) {
+					var noteId = notes[i].cn_note_id;
+					var noteTitle = notes[i].cn_note_title;
+					var noteTypeID = notes[i].cn_note_type_id;
+//							console.log(noteTypeID);
+					//创建笔记列表li
+					createNoteLi(noteId,noteTitle,noteTypeID);
+
+				}
+			}
+		},
+		error:function() {
+			showMsg('抱歉！出错了！');
+		}
+	});
+}
 
 
 
 // 处理笔记
 function loadBookNotes() {
-	
+
 	// 点击笔记本切换到笔记区
 	changeNoteList(2);
-	
-	
+
 	// 点击笔记本加载笔记列表
 	// 为li 增加单击事件，使用父元素选择子元素
 	// ajax 异步处理处理完ajax后，直接调用该函数，这时候回调还没执行，li并没有生成
@@ -446,6 +495,7 @@ function loadBookNotes() {
 							var noteId = notes[i].cn_note_id;
 							var noteTitle = notes[i].cn_note_title;
 							var noteTypeID = notes[i].cn_note_type_id;
+
 //							console.log(noteTypeID);
 							//创建笔记列表li
 							createNoteLi(noteId,noteTitle,noteTypeID);
@@ -463,7 +513,7 @@ function loadBookNotes() {
 // 处理笔记的li
 //创建一个笔记li列表项
 function createNoteLi(noteId,noteTitle,noteTypeID) {
-	
+
 	//拼一个笔记li元素
 	var sli = '';
 	sli+='<li>';
@@ -474,7 +524,7 @@ function createNoteLi(noteId,noteTitle,noteTypeID) {
 	// 判断是否分享
 	if(noteTypeID == 2) {
 		sli+='		<i class="fa fa-sitemap"></i>';
-	} 
+	}
 	sli+='	</a>';
 	sli+='	<div class="note_menu" tabindex="-1">';
 	sli+='		<dl>';
@@ -487,6 +537,7 @@ function createNoteLi(noteId,noteTitle,noteTypeID) {
 	var $li = $(sli);
 	$li.data("noteId",noteId);//绑定笔记ID
 	$li.data("noteTypeId",noteTypeID);//绑定笔记ID
+
 	//添加到笔记列表ul中
 	$("#note_ul").append($li);
 };
