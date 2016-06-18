@@ -54,7 +54,7 @@
 		where cn_note_id = #{cn_note_id}
 	</update>
 	
-	<!-- 新建笔记 -->
+	<!-- 新建笔记 和 收藏笔记-->
 	<insert id="save" 
 	parameterType="org.tedu.cloudnote.entity.Note">
 	insert into cn_note
@@ -62,18 +62,19 @@
 		cn_user_id,cn_note_status_id,
 		cn_note_type_id,cn_note_title,
 		cn_note_body,cn_note_create_time,
-		cn_note_last_modify_time)
+		cn_note_last_modify_time,cn_favors)
 	values (#{cn_note_id},#{cn_notebook_id},
 		#{cn_user_id},'1',
 		'1',#{cn_note_title},
-		'',#{cn_note_create_time},
-		#{cn_note_last_modify_time})
+		#{cn_note_body},#{cn_note_create_time},
+		#{cn_note_last_modify_time},
+		#{cn_favors})
 	</insert>
 
 	<!-- 处理删除 修改cn_note_status_id 字段 -->
 	<update id="updateStatus" parameterType="string">
 		update cn_note  set 
-			cn_note_status_id='2'
+			cn_note_status_id ='2'
 				where cn_note_id = #{_param};
 	</update>	
 	

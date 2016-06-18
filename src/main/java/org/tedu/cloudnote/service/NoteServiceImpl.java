@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.tedu.cloudnote.dao.NoteDao;
+import org.tedu.cloudnote.dao.ShareDao;
 import org.tedu.cloudnote.entity.Note;
 import org.tedu.cloudnote.util.NoteResult;
 import org.tedu.cloudnote.util.NoteUtil;
@@ -23,6 +24,9 @@ public class NoteServiceImpl implements NoteService{
 
 	@Resource
 	private NoteDao dao;
+	
+	@Resource
+	private ShareDao shareDao;
 	
 	@Override
 	public NoteResult loadBookNotes(String bookId) {
@@ -58,24 +62,40 @@ public class NoteServiceImpl implements NoteService{
 	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT,rollbackFor=Exception.class)
-	public NoteResult updateNote(String noteID, String noteTitle,
-			String noteBody) {
+	public NoteResult updateNote(Note note) {
 		// 建立json 状态对象
 		NoteResult result = new NoteResult();
 		
 		
-		Note note = new Note();
-		note.setCn_note_body(noteBody);
-		note.setCn_note_id(noteID);
-		note.setCn_note_title(noteTitle);
+//		Note note = new Note();
+//		note.setCn_note_body(note.getCn_note_body());
+//		note.setCn_note_id(note.getCn_note_id());
+//		note.setCn_note_title(note.getCn_note_title());
 		
 		dao.dynamicUpdate(note);
+		
+//		System.err.println(noteTypeID);
+		
+		if("2".equals(note.getCn_note_type_id())) {
+			// 同步更新
+			shareUpdate(note);
+		}
+	
 		
 		result.setMsg("保存成功");
 		result.setStatus(0);
 		
 		return result;
 	}
+	
+	
+
+	@Override
+	public void shareUpdate(Note note) {
+		shareDao.updateShareBody(note);
+	}
+	
+	
 
 	@Override
 	public NoteResult save(String userID, String noteName, String bookID) {
@@ -132,4 +152,5 @@ public class NoteServiceImpl implements NoteService{
 		result.setMsg("转移成功");
 		return result;
 	}
+
 }

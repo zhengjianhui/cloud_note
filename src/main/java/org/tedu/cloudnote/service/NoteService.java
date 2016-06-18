@@ -1,5 +1,6 @@
 package org.tedu.cloudnote.service;
 
+import org.tedu.cloudnote.entity.Note;
 import org.tedu.cloudnote.util.NoteResult;
 
 public interface NoteService {
@@ -26,7 +27,7 @@ public interface NoteService {
 	 * @param noteBody
 	 * @return
 	 */
-	public NoteResult updateNote(String noteID, String noteTitle, String noteBody);
+	public NoteResult updateNote(Note note);
 	
 	/**
 	 * 新建笔记
@@ -51,4 +52,11 @@ public interface NoteService {
 	 * @return
 	 */
 	public NoteResult moveNote(String bookID, String noteID);
+
+	/**
+	 * 同步更新share 表
+	 * @param note
+	 */
+	public void shareUpdate(Note note);
+
 }

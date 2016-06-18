@@ -1,19 +1,58 @@
+
+
+// 弹出收藏按钮
+function alertShareCollectionWindow() {
+	
+	// 切换book_ul 同步区域book 显示区域
+    $("#BookFind").hide();
+    $("#CollectionFind").show();
+    // 修改状态
+    $('#like_button').attr("value","5");
+    loadUserBooks(6);
+	
+	$("#can").load("alert/alert_share.html",function() {
+		var $books = $('#book_ul li');
+
+		// 循环
+		for (var i = 0; i < $books.length; i++) {
+			// 转换jquery对象
+			var $li = $($books[i]);
+			var bookType = $li.data.bookType;
+			var bookName = $li.text();
+			var bookID = $li.data('bookId');
+
+			// console.log(bookID);
+			// console.log(bookName);
+
+			// 拼接一个option
+			var option = "<option value='" + bookID + "'>" + bookName
+					+ "</option>";
+
+			$('#ccc').append(option);
+		}
+	});
+	$(".opacity_bg").show();
+	
+}
+
+
 // 恢复删除的笔记
 function alertReplayWindow() {
-
+	// 修改状态
+	loadUserBooks(5);
+	
 	// 获取li 上两级元素
 	var $li = $(this).parent().parent();
 
 	$('#delete_ul a').removeClass('checked');
 	$li.find('a').addClass('checked');
 
-
 	// 获取请求参数
 	var noteID = $li.data('noteID');
-
 	// 添加点击事件
 	// 加载页面后执行
 	$("#can").load("alert/alert_replay.html",function() {
+		
 				// 获取所有book
 				var $books = $('#book_ul li');
 
@@ -29,20 +68,20 @@ function alertReplayWindow() {
 							+ "</option>";
 
 					$('#replaySelect').append(option);
-
+					
 				}
 				// 处理恢复
 				$('#can').on('click', '#deleteReplayNoteByBook', function() {
+					
 					// 获取选中的option 的value 属性值
+					
 					var bookID = $('#replaySelect option:selected').attr('value');
-					// 接收删除状态
-					var flag = deleteReplay(noteID,bookID);
+					// 删除
 
-					if (flag = true) {
-						// 清除自己
-						$li.remove();
-					}
-
+					// this指向混乱 在deleteReplay(noteID,bookID); 方法中通过#delete_ul a.checked处理
+//					$li.remove(); 
+//					deleteReplay(noteID,bookID,$li);
+					deleteReplay(noteID,bookID);
 				});
 	});
 	$(".opacity_bg").show();
@@ -70,10 +109,7 @@ function alertDeleteRollbackWindow() {
 			// 接收删除状态
 			var flag = deleteByID(noteID);
 //			console.log(deleteByID(noteID));
-			if (flag = true) {
-				// 清除自己
-				$li.remove();
-			}
+
 
 		});
 
@@ -125,14 +161,16 @@ function alertConfirmDeleteNoteWindow() {
 
 // 弹出添加笔记本 对话框
 function alertAddBookWindow() {
-	// 点击 “+” 按钮弹出创建笔记本对话框 加载本地html文件
 	$("#can").load("alert/alert_notebook.html");
-
-	// 显示出对话框灰色背景
-	// <div class="opacity_bg" style='display:none'></div> 点击添加后 页面变灰效果
 	$(".opacity_bg").show();
-
 }
+
+// 弹出添加收藏笔记本 对话框
+function alertAddCollectionBookWindow() {
+	$("#can").load("alert/alert_collectionbook.html");
+	$(".opacity_bg").show();
+}
+
 
 // 弹出添加笔记 对话框
 function alertAddNoteWindow() {

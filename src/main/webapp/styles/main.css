@@ -11196,7 +11196,7 @@ body.gallery-expand {
 .contacts-list li a:hover .btn_delete,.contacts-list li a:hover .btn{
 	visibility:visible;
 }
-#add_notebook,#add_note,#join_action{
+#add_notebook,#add_note,#join_action,#add_collectionFind{
 	position:absolute;
 	right:10px;
 	top:4px;

@@ -8,7 +8,8 @@
 		parameterType="string" resultType="org.tedu.cloudnote.entity.Book">
 		 select * from cn_user as a 
 			left join cn_notebook as b on a.cn_user_id = b.cn_user_id
-				where b.cn_user_id = #{_prarm};
+				where b.cn_user_id = #{cn_user_id}
+				and b.cn_notebook_type_id = #{cn_notebook_type_id};
 	</select>
 	
 	<!-- 新增笔记本 -->

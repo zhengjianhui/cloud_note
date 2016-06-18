@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.tedu.cloudnote.dao.FavorsDao" >
+  <resultMap id="BaseResultMap" type="org.tedu.cloudnote.entity.Favors" >
+    <id column="cn_user_id" property="cnUserId" jdbcType="VARCHAR" />
+    <result column="cn_share_id" property="cnShareId" jdbcType="VARCHAR" />
+    <result column="cn_favors_id" property="cnFavorsId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+   <!-- 查询笔记是否分享过 -->
+	<select id="countShareById" parameterType="org.tedu.cloudnote.entity.Favors" resultType="Integer">
+		select count(cn_user_id) from cn_favors
+			where cn_user_id = #{cnUserId}
+			and cn_share_id=#{cnShareId}
+	</select>
+	
+	<!-- 插入记录 -->
+	<insert id="insertFavors" parameterType="org.tedu.cloudnote.entity.Favors">
+	  insert into cn_favors (cn_user_id, cn_share_id,cn_favors_id)
+	    values (#{cnUserId,jdbcType=VARCHAR}, #{cnShareId,jdbcType=VARCHAR},#{cnFavorsId,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 取消分享 favors表 -->
+	<delete id="deleteFavors" parameterType="String">
+		delete from cn_favors where cn_favors_id = #{_param};
+	</delete>
+	<!-- 取消分享 note表 -->
+	<delete id="deleteNoteByFavaorsID" parameterType="String">
+		delete from cn_note where cn_favors = #{_param};
+	</delete>
+</mapper>

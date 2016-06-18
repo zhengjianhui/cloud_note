@@ -2,7 +2,11 @@
 
 
 // 创建笔记本
-function sureAddBook() {
+function sureAddBook(event) {
+
+	var bookType = event.data.num;
+
+
 	// 获取请求参数
 	var bookName = $('#input_notebook').val();
 	// 获取用户的id
@@ -17,7 +21,8 @@ function sureAddBook() {
 		dataType : "json",
 		data : {
 			"bookName" : bookName,
-			"userID" : userID
+			"userID" : userID,
+			"bookType":bookType
 		},
 		success : function(result) {
 			if (result.status == 0) {
@@ -26,6 +31,9 @@ function sureAddBook() {
 				// 隐藏灰色效果
 				$(".opacity_bg").hide();
 				createBookLi(result.bookID, bookName);
+				
+				// 清空请求参数
+				$('#input_notebook').val("");
 				alert(result.msg);
 			}
 		},
@@ -38,12 +46,21 @@ function sureAddBook() {
 }
 
 // 加载用户笔记本
-function loadUserBooks() {
+function loadUserBooks(bookType) {
+	// bookType 验证笔记本类型
+//	console.log(bookType);
+	$('#book_ul').empty();
+	
+	if(undefined == bookType) {
+		bookType = 5;
+	}
+
 	// 发送ajax 请求
 	$.ajax({
+		async:false,
 		url : "http://localhost:8080/cloud_note/book/loadbooks.do",
 		type : "post",
-		data : {"userID" : userID},
+		data : {"userID" : userID,"bookType":bookType},
 		dataType : "json",
 		success : function(result) {
 			// 打桩
@@ -51,26 +68,44 @@ function loadUserBooks() {
 
 			// 遍历输出result.data
 			if (result.status == 0) {
+				
 				var books = result.data;// 笔记本集合
+				
 				// 循环生成笔记本列表
 				for (var i = 0; i < books.length; i++) {
 					var bookId = books[i].cn_notebook_id;
 					var bookName = books[i].cn_notebook_name;
-					// 创建笔记本列表li
+					
+					// 获取笔记本类型
+					// var bookNoteType = book[i].cn_notebook_type;
+					// if(bookNote == bookType) {
+					// 	// 创建笔记本列表li
+					// 	createBookLi(bookId, bookName);
+					//
+					// } else {
+					// 	// 笔记类型为 5 是为笔记本类型为正常
+					// 	if(bookNoteType == 5) {
+					//
+					//
+					// 	}
+					// }
 					createBookLi(bookId, bookName);
-					showMsg(result.msg);
 				}
+//				showMsg(result.msg);
+				return true;
 			}
 		},
 		error : function() {
 			alert("抱歉~！出错了！！")
 		}
 	});
-
+	
 }
 
 // 将数据绑定到li元素上
 function createBookLi(bookId, bookName) {
+
+
 	// 拼一个li字符串
 	// <i></i> 必须双标签使用，一般用来做标签
 	var sli = '<li class="online">';

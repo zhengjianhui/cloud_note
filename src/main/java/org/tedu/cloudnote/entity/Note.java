@@ -14,6 +14,16 @@ public class Note {
 	private String cn_note_body;
 	private Long cn_note_create_time;
 	private Long cn_note_last_modify_time;
+	private String cn_favors;
+	
+	public String getCn_favors() {
+		return cn_favors;
+	}
+
+	public void setCn_favors(String cn_favors) {
+		this.cn_favors = cn_favors;
+	}
+
 	//转成JSON时自动追加createTime:值
 	//将cn_note_create_time转成yyyy-mm-dd表示格式
 	public String getCreateTime(){

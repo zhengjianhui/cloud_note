@@ -11,7 +11,7 @@ public interface BookDao {
 	 * @param userID
 	 * @return
 	 */
-	public List<Book> loadUserBooks(String userID);
+	public List<Book> loadUserBooks(Book book);
 	
 	
 	/**

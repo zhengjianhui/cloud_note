@@ -19,6 +19,10 @@ function showMsg(msg) {
 
 	});
 
+	// 取消动画
+	$('body').click(function() {
+		$("#showMsg").hide();
+	});
 
    }
 
@@ -39,6 +43,8 @@ function changeNoteList(index){
 	$("#pc_part_8").hide();//活动列表
 	//控制某个列表显示
 	$("#pc_part_" + index).show();
+	
+
 }
 
 
@@ -308,6 +314,10 @@ function updateNote(){
 			$("#note_ul a.checked").parent();
 		var $noteID = $li.data("noteId");
 
+		var noteTypeID = $li.data("noteTypeId");
+//		console.log(noteTypeID);
+
+
 		// 获取笔记id 标题 内容
 //		var $noteID = $('#input_note_title').data("noteId");
 //		console.log($noteID);
@@ -320,7 +330,8 @@ function updateNote(){
 			alert("请选择要保存的笔记");
 			return;
 		}
-		// 防止笔记下拉 选中后点击保存按钮
+
+		// 防止操作笔记下拉 选中后点击 保存按钮
 		if("" == $noteTitle) {
 			alert("标题不能为空");
 			return;
@@ -329,15 +340,21 @@ function updateNote(){
 		$.ajax({
 			url:"http://localhost:8080/cloud_note/note/update.do",
 			type:"post",
-			data:{"noteID":$noteID,
-				"noteTitle":$noteTitle,
-				"noteBody":noteBody},
+			data:{"cn_note_id":$noteID,
+				"cn_note_title":$noteTitle,
+				"cn_note_body":noteBody,
+				"cn_note_type_id":noteTypeID
+				},
 			dataType:"json",
 			success:function(result){
 				if(result.status==0){
 					//更新列表中li的标题信息
 					var sli='<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> ';
 					sli+= $noteTitle;
+					// 重新定位保存图标
+					if(noteTypeID == 2) {
+						sli+='		<i class="fa fa-sitemap"></i>';
+					}
 					sli+='<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>';
 
 					$li.find("a").html(sli);
@@ -373,6 +390,9 @@ function updateNote(){
 
 // 处理笔记内容 与 标题
 function loadNote() {
+	// 切换显示区
+	$("#pc_part_5").hide();
+	$("#pc_part_3").show();
 	// 为 note_ul 的子元素 li 添加（on函数配合ajax动态添加）单击事件
 //	$('#note_ul').on('click','li',function() {
 		// 获取请求参数
@@ -401,8 +421,14 @@ function loadNote() {
 					// 获取 data.cn_note_title 字段 写入笔记标题
 					$('#input_note_title').val(result.data.cn_note_title);
 					// um 编辑器
-					um.setContent(result.data.cn_note_body);
-
+					
+					var body = result.data.cn_note_body;
+					// 防止空， 报 TypeError: Cannot read property 'replace' of null 错误
+					if(body == null) {
+						um.setContent("");
+					}else {
+						um.setContent(result.data.cn_note_body);
+					}
 					$('#input_note_title').data("noteId", result.data.cn_note_id);
 				}
 			},
@@ -474,6 +500,9 @@ function loadBookNotes() {
 			// 获取点击笔记本的ID值
 			var bookId = $(this).data("bookId");
 
+			var num = 1;
+
+
 			// 发送ajax请求
 			$.ajax({
 				url:'http://localhost:8080/cloud_note/note/loadnotes.do',
@@ -495,10 +524,12 @@ function loadBookNotes() {
 							var noteId = notes[i].cn_note_id;
 							var noteTitle = notes[i].cn_note_title;
 							var noteTypeID = notes[i].cn_note_type_id;
-
+							
+							// 获取收藏
+							var favors = notes[i].cn_favors;
 //							console.log(noteTypeID);
 							//创建笔记列表li
-							createNoteLi(noteId,noteTitle,noteTypeID);
+							createNoteLi(noteId,noteTitle,noteTypeID,favors);
 
 						}
 					}
@@ -512,7 +543,7 @@ function loadBookNotes() {
 
 // 处理笔记的li
 //创建一个笔记li列表项
-function createNoteLi(noteId,noteTitle,noteTypeID) {
+function createNoteLi(noteId,noteTitle,noteTypeID,favors) {
 
 	//拼一个笔记li元素
 	var sli = '';
@@ -526,17 +557,28 @@ function createNoteLi(noteId,noteTitle,noteTypeID) {
 		sli+='		<i class="fa fa-sitemap"></i>';
 	}
 	sli+='	</a>';
-	sli+='	<div class="note_menu" tabindex="-1">';
-	sli+='		<dl>';
-	sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_move" title="移动至..."><i class="fa fa-random"></i></button></dt>';
-	sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_share" title="分享"><i class="fa fa-sitemap"></i></button></dt>';
-	sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_delete" title="删除"><i class="fa fa-times"></i></button></dt>';
-	sli+='		</dl>';
-	sli+='	</div>';
+	if(favors == null) {
+		sli+='	<div class="note_menu" tabindex="-1">';
+		sli+='		<dl>';
+		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_move" title="移动至..."><i class="fa fa-random"></i></button></dt>';
+		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_share" title="分享"><i class="fa fa-sitemap" id="sureShareNote"></i></button></dt>';
+		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_delete" title="删除"><i class="fa fa-times"></i></button></dt>';
+		sli+='		</dl>';
+		sli+='	</div>';
+	} else {
+		sli+='	<div class="note_menu" tabindex="-1">';
+		sli+='		<dl>';
+		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_move" title="移动至..."><i class="fa fa-random"></i></button></dt>';
+		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_share" title="取消收藏" id="shareCollection"><i class="fa fa-star"></i></button></dt>';
+		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_delete" title="删除"><i class="fa fa-times"></i></button></dt>';
+		sli+='		</dl>';
+		sli+='	</div>';
+	}
 	sli+='</li>';
 	var $li = $(sli);
 	$li.data("noteId",noteId);//绑定笔记ID
-	$li.data("noteTypeId",noteTypeID);//绑定笔记ID
+	$li.data("noteTypeId",noteTypeID);// 分享状态 
+	$li.data("favors",favors);// 收藏状态
 
 	//添加到笔记列表ul中
 	$("#note_ul").append($li);

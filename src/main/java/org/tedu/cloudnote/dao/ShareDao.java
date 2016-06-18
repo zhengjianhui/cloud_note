@@ -2,6 +2,7 @@ package org.tedu.cloudnote.dao;
 
 import java.util.List;
 
+import org.tedu.cloudnote.entity.Note;
 import org.tedu.cloudnote.entity.Share;
 
 public interface ShareDao {
@@ -13,7 +14,7 @@ public interface ShareDao {
 	public void save(Share share);
 	
 	/**
-	 * 根据noteID查询 share
+	 * 根据noteID查询 note
 	 * @param noteID
 	 * @return
 	 */
@@ -40,5 +41,12 @@ public interface ShareDao {
 	 * @return
 	 */
 	public void deleteShare(String noteID);
+	
+	
+	/**
+	 * 修改分享
+	 * @param note
+	 */
+	public void updateShareBody(Note note);
 	
 }

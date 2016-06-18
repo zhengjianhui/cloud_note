@@ -1,21 +1,62 @@
 
+// 删除笔记的预览
+
+//// 查看分享笔记
+//// 预览功能
+//function findSearch(event) {
+//
+//	//设置选中状态
+//	$("#search_ul a").removeClass("checked");
+//	$(this).find("a").addClass("checked");
+//
+//	var noteID = $(this).data('noteId');
+//
+//	// 发送ajax请求
+//	$.ajax({
+//		data:{"noteID":noteID},
+//		dataType:"json",
+//		error:function() {
+//			altre('加载预览失败')
+//		},success:function(result) {
+//			if(result.status==0){
+//				// 切换显示区域
+//				$("#pc_part_3").hide();
+//				$("#pc_part_5").show();
+//
+//				var title =
+//					result.data.cn_share_title;
+//				var body =
+//					result.data.cn_share_body;
+//				 //显示到预览区
+//				 $("#noput_note_title").html(title);
+//
+//				 $("#noput_note_body").html(body);
+//			}
+//		},
+//		type:"post",
+//		url:"http://localhost:8080/cloud_note/share/load.do"
+//	});
+//}
+
+
 // 处理笔记的还原
 function deleteReplay(noteID,bookID) {
+
+
 	$("#can").empty();
 	$(".opacity_bg").hide();
 
-	console.log(noteID);
-	console.log(bookID);
+//	console.log(noteID);
+//	console.log(bookID);
 
 	if('none' == bookID) {
 		alert("请选择笔记本！");
 		return ;
 	}
 
-	// 判断状态
-	var flag = false;
-
-	$.ajax({data:{"noteID":noteID,"bookID":bookID},
+	// 用于判断ajax 状态
+	$.ajax({
+		data:{"noteID":noteID,"bookID":bookID},
 		dataType:"json",
 		error:function() {
 			showMsg('抱歉!出错了!');
@@ -23,13 +64,16 @@ function deleteReplay(noteID,bookID) {
 		success:function(result) {
 			if(result.status == 0) {
 				showMsg(result.msg);
-				flag = true;
+				// 修改变量 用于判断删除状态
+			    // return 错误，在ajax中return function收不到参数
+			    //    return '1';
+			// 删除笔记	
+			$('#delete_ul a.checked').parent().remove();
 			}
 		},
 		type:"post",
 		url:"http://localhost:8080/cloud_note/delete/deleteReplay.do"
 		});
-	return flag;
 }
 
 
@@ -50,7 +94,7 @@ function deleteByID(noteID) {
   // 发送ajax 请求
 
   // 用于判断ajax 状态
-	 var flag = false;
+//  var flag = false;
   $.ajax({
 	  	data:{"noteID":noteID},
 	  	dataType:"json",
@@ -61,9 +105,12 @@ function deleteByID(noteID) {
 	        if(result.status == 0) {
 	            showMsg(result.msg);
 	            // 修改变量 用于判断删除状态
-	            flag = true;
+//	            flag = true;
 	            // return 错误，在ajax中return function收不到参数
 //	            return '1';
+	            
+	         // 删除笔记	
+				$('#delete_ul a.checked').parent().remove();
 	        }
 	  	},
 	  	type:"post",
@@ -71,7 +118,7 @@ function deleteByID(noteID) {
 	  	});
 
   		// 返回ajax 状态 true 表示删除成功
-  		return true;
+//  		return true;
 }
 
 

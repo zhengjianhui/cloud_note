@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.tedu.cloudnote.dao.NoteDao;
 import org.tedu.cloudnote.dao.ShareDao;
 import org.tedu.cloudnote.entity.Note;
@@ -21,6 +22,7 @@ public class ShareServiceImpl implements ShareService{
 	@Resource
 	private ShareDao shareDao;
 
+	@Transactional
 	@Override
 	public NoteResult shareNote(String noteID,  String noteTypeID) {
 		NoteResult result = new NoteResult();

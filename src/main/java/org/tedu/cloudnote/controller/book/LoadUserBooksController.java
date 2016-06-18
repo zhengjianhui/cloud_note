@@ -22,8 +22,8 @@ public class LoadUserBooksController {
 
 	@RequestMapping("/loadbooks.do")
 	@ResponseBody
-	public NoteResult execute(String userID) {
-		return bookService.loadUserBooks(userID);
+	public NoteResult execute(String userID, String bookType) {
+		return bookService.loadUserBooks(userID, bookType);
 	}
 	
 }

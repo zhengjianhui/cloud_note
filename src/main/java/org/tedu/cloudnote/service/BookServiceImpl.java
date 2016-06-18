@@ -21,11 +21,14 @@ public class BookServiceImpl implements BookService {
 	private BookDao dao;
 	
 	@Override
-	public NoteResult loadUserBooks(String userID) {
+	public NoteResult loadUserBooks(String userID, String bookType) {
 		NoteResult result = new NoteResult();
 		
+		Book book = new Book();
+		book.setCn_user_id(userID);
+		book.setCn_notebook_type_id(bookType);
 		// 获取所有笔记
-		List<Book> books = dao.loadUserBooks(userID);
+		List<Book> books = dao.loadUserBooks(book);
 		
 		result.setData(books);
 		result.setStatus(0);
@@ -33,9 +36,9 @@ public class BookServiceImpl implements BookService {
 		return result;
 	}
 
-	@Transactional(isolation=Isolation.DEFAULT,propagation=Propagation.REQUIRED)
+	@Transactional
 	@Override
-	public NoteResult addBook(String userID, String bookName) {
+	public NoteResult addBook(String userID, String bookName, String bookType) {
 		NoteResult result = new NoteResult();
 		
 		Book book = new Book();
@@ -44,7 +47,7 @@ public class BookServiceImpl implements BookService {
 		
 		book.setCn_notebook_createtime(new Timestamp(System.currentTimeMillis())); //设置创建时间
 		book.setCn_notebook_desc("");
-		book.setCn_notebook_type_id("5"); //normal
+		book.setCn_notebook_type_id(bookType); // 笔记本类型
 		book.setCn_notebook_id(bookID); // 设置笔记本id
 		book.setCn_notebook_name(bookName);
 		book.setCn_user_id(userID);

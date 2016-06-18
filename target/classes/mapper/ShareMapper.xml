@@ -51,5 +51,16 @@
 		from cn_share
 			where cn_share_title like '%' #{_param} '%'
 	</select>
+	
+	
+	<!-- 更新share记录 -->
+	<update id="updateShareBody" parameterType="org.tedu.cloudnote.entity.Book">
+		update cn_share set
+			cn_share_title = #{cn_note_title},
+			cn_share_body = #{cn_note_body}
+				where cn_note_id = #{cn_note_id};
+	
+	</update>
+	
 
 </mapper>
