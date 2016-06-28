@@ -79,7 +79,12 @@ function shareCollection(event) {
 		success:function(result) {
 			// 为2 时判断取消
 			if(num == 2) {
+				// 清空内容
+				$('#input_note_title').val("");
+				um.setContent("");
 				$li.remove();
+
+
 			}
 			showMsg(result.msg);
 		},

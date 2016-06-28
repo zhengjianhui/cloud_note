@@ -570,7 +570,6 @@ function createNoteLi(noteId,noteTitle,noteTypeID,favors) {
 		sli+='		<dl>';
 		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_move" title="移动至..."><i class="fa fa-random"></i></button></dt>';
 		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_share" title="取消收藏" id="shareCollection"><i class="fa fa-star"></i></button></dt>';
-		sli+='			<dt><button type="button" class="btn btn-default btn-xs btn_delete" title="删除"><i class="fa fa-times"></i></button></dt>';
 		sli+='		</dl>';
 		sli+='	</div>';
 	}

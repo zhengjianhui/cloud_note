@@ -52,7 +52,7 @@ public class FavorsServiceImpl implements FavorsService {
 			// 删除note表中记录
 			favorsDao.deleteNoteByFavaorsID(favorsID);
 			
-			result.setMsg("以取消分享");
+			result.setMsg("以取消收藏");
 			result.setStatus(1);
 			return result;
 		}

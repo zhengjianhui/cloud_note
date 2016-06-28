@@ -5,7 +5,10 @@
 	    <param-name>contextConfigLocation</param-name>  
 	    <param-value>classpath:conf/spring-mybatis.xml</param-value>
 	</context-param>   
-	 
+	<context-param>  
+	    <param-name>contextConfigLocation</param-name>  
+	    <param-value>classpath:conf/spring-aop.xml</param-value>
+	</context-param> 
 	
 	
 	 <!--  Spring监听器，启动mvc 时同时启动其他xml  	 -->
@@ -28,7 +31,7 @@
 		<!-- 设置初始化属性 Servlet启动时，自动加载bean容器 -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:conf/spring-mvc.xml</param-value>
+			<param-value>classpath:conf/spring-*.xml</param-value>
 		</init-param>
 		<!-- 设置优先级，tomcat启动时自动初始化该Servlet -->
 		<load-on-startup>1</load-on-startup>
